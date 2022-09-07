@@ -1,0 +1,26 @@
+version: "3"
+services:
+    db:
+        image: postgres:latest
+        container_name: postgres-go-api-example
+        restart: always
+        ports:
+            - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+        environment:
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+        volumes:
+            - $PWD/:/postgresql/data/:/var/lib/postgresql/data
+    app:
+        container_name: go_api_container
+        build: .
+        restart: always
+        ports:
+            - ${GIN_PORT}:${GIN_PORT} #host:docker-container
+        environment:
+            POSTGRES_HOST: db
+        depends_on:
+            - db
+        volumes:
+            - .:/go/src/go-api-gin-example
+        command: go run main.go
