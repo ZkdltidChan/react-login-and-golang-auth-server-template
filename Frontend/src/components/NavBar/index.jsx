@@ -21,6 +21,7 @@ import {
     MenuButton as ChakraMenuButton,
     MenuList as ChakraMenuList,
 } from '@chakra-ui/react';
+import {ColorModeSwitcher} form "../../../ColorModeSwitcher.js"
 import {
     HamburgerIcon,
     CloseIcon,
@@ -159,6 +160,7 @@ export default function NavBar() {
                         <Box>
                             {<NavLogo />}
                         </Box>
+                        <ColorModeSwitcher/>
                         <MenuList Links={Links} />
                     </HStack>
                 </Box>

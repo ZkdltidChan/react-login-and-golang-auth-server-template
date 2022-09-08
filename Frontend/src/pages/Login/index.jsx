@@ -13,11 +13,12 @@ import {
     Button,
     Divider,
 } from "@chakra-ui/react";
-import { FaTwitter } from 'react-icons/fa'
-import { FcGoogle } from 'react-icons/fc'
 import { useState } from "react";
 import { loginUser, useAuthDispatch, useAuthState } from "../../context";
 import { useNavigate } from "react-router-dom";
+import DiscordLoginButton from "../../components/Login/DiscordLoginButton";
+import GoogleLoginButton from "../../components/Login/GoogleLoginButton";
+import TwitterLoginButton from "../../components/Login/TwitterLoginButton";
 
 const LoginFrom = ({ onApply }) => {
     const dispatch = useAuthDispatch()
@@ -32,7 +33,7 @@ const LoginFrom = ({ onApply }) => {
         console.log(payload)
         try {
             const response = await loginUser(dispatch, payload)
-            if(response){
+            if (response) {
                 navigate("/")
             }
             // if login success, router page
@@ -60,20 +61,11 @@ const LoginFrom = ({ onApply }) => {
 
 // TODO: third party login api
 const ThirdPartyLogin = () => {
-    const LoginWithGoogle = () => (
-        <Button bg="white" variant="outline" leftIcon={<FcGoogle />} onClick={() => console.log("login with google")}>
-            Login With Google
-        </Button>
-    )
-    const LoginWithTwitter = () => (
-        <Button colorScheme='twitter' leftIcon={<FaTwitter />} onClick={() => console.log("login with twitter")}>
-            Login With Twitter
-        </Button>
-    )
     return (
         <VStack w="100%">
-            <LoginWithGoogle />
-            <LoginWithTwitter />
+            <GoogleLoginButton />
+            <TwitterLoginButton />
+            <DiscordLoginButton />
         </VStack>
     )
 }
