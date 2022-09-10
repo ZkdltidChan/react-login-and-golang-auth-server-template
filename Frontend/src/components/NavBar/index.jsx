@@ -20,17 +20,19 @@ import {
     MenuItem as ChakraMenuItem,
     MenuButton as ChakraMenuButton,
     MenuList as ChakraMenuList,
+    Heading,
 } from '@chakra-ui/react';
-import {ColorModeSwitcher} form "../../../ColorModeSwitcher.js"
+import { ColorModeSwitcher } from './../../ColorModeSwitcher';
 import {
     HamburgerIcon,
     CloseIcon,
 } from '@chakra-ui/icons';
 import Logo from "../Logo";
+import { logout, useAuthDispatch } from "../../hook/auth";
 
 const Links = [
     { to: "embed_page_example", text: "Embed Page Example" },
-    { to:"contact_us", text: "Contact Us"},
+    { to: "contact_us", text: "Contact Us" },
 ]
 
 
@@ -111,34 +113,46 @@ const MenuList = ({ Links }) => (
     </HStack>
 )
 
-const AuthMenu = ({ auth }) => (
-    <HStack
-        as={'nav'}
-        spacing={4}
-    >
-        {auth ?
-            <ChakraMenu>
-                <ChakraMenuButton as={Avatar} size={"sm"}>
-                    <ChakraMenuList>
-                        <ChakraMenuItem>Setting</ChakraMenuItem>
-                        <ChakraMenuItem>Logout</ChakraMenuItem>
-                    </ChakraMenuList>
-                </ChakraMenuButton>
-            </ChakraMenu>
-            :
-            <HStack>
-                <NavLink to="/login" >Login</NavLink>
-                <NavLink
-                    display={{
-                        base: 'none',
-                        md: 'flex'
-                    }} to="/signup">Sign up</NavLink>
-            </HStack>
-        }
-    </HStack>
-)
+const AuthMenu = ({ user }) => {
+    const dispatch = useAuthDispatch()
+    const handleLogout = async () => {
+        await logout(dispatch)
+        navigator('/')
+    }
+    const handleSetting = () => { console.log("setting") }
 
-export default function NavBar() {
+    return (
+        <HStack
+            as={'nav'}
+            spacing={4}
+        >
+            <Box isplay={{base:'none', md: 'full' }}>
+                <ColorModeSwitcher />
+            </Box>
+            {user ?
+                <ChakraMenu>
+                    <ChakraMenuButton as={Avatar} name={user.username} size={"sm"} />
+                    <ChakraMenuList>
+                        <Heading>{user.username}</Heading>
+                        <ChakraMenuItem onClick={handleSetting}>Setting</ChakraMenuItem>
+                        <ChakraMenuItem onClick={handleLogout}>Logout</ChakraMenuItem>
+                    </ChakraMenuList>
+                </ChakraMenu>
+                :
+                <HStack>
+                    <NavLink to="/login" >Login</NavLink>
+                    <NavLink
+                        display={{
+                            base: 'none',
+                            md: 'flex'
+                        }} to="/signup">Sign up</NavLink>
+                </HStack>
+            }
+        </HStack>)
+}
+
+
+export default function NavBar({ user }) {
     return (
         <>
             <Flex
@@ -160,12 +174,14 @@ export default function NavBar() {
                         <Box>
                             {<NavLogo />}
                         </Box>
-                        <ColorModeSwitcher/>
+
                         <MenuList Links={Links} />
                     </HStack>
                 </Box>
+
+                <AuthMenu user={user} />
                 {/* <AuthMenu auth={true} /> */}
-                <AuthMenu auth={false} />
+
             </Flex>
             <Outlet />
         </>

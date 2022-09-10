@@ -1,26 +1,37 @@
-version: "3"
+version: "3.8"
 services:
-    db:
-        image: postgres:latest
-        container_name: postgres-go-api-example
-        restart: always
-        ports:
-            - "${POSTGRES_PORT}:${POSTGRES_PORT}"
-        environment:
-            POSTGRES_USER: ${POSTGRES_USER}
-            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-        volumes:
-            - $PWD/:/postgresql/data/:/var/lib/postgresql/data
-    app:
-        container_name: go_api_container
-        build: .
-        restart: always
-        ports:
-            - ${GIN_PORT}:${GIN_PORT} #host:docker-container
-        environment:
-            POSTGRES_HOST: db
-        depends_on:
-            - db
-        volumes:
-            - .:/go/src/go-api-gin-example
-        command: go run main.go
+  app:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./
+    container_name: crud-with-auth
+    ports:
+      - "4000:4000"
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./:/app
+
+  redis:
+    image: redis:6.2
+    volumes:
+      - "./tmp/redis:/data"
+    ports:
+      - "6379:6379"
+
+  postgres:
+      image: postgres:latest
+      container_name: postgres-oauth-test
+      restart: always
+      ports:
+          - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+      environment:
+          POSTGRES_USER: ${POSTGRES_USER}
+          POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      volumes:
+          - $PWD/:/postgresql/data/:/var/lib/postgresql/data
+  # postgres:
+  #   image: postgres:13.4
+  #   ports:
+  #     - "5433:5432"

@@ -6,7 +6,8 @@ import {
 // import { ColorModeSwitcher } from './ColorModeSwitcher';
 import Router from './router/router';
 import { BrowserRouter } from "react-router-dom";
-import { AuthProvider } from './context';
+// import { AuthProvider } from './context';
+import {AuthProvider} from './hook/auth'
 function App() {
   return (
     <ChakraProvider theme={theme}>
