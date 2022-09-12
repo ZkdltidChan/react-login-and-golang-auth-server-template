@@ -1,6 +1,5 @@
 import React, { } from "react";
 import {
-    Box,
     IconButton as ChakraIconButton,
     Button as ChakraButton,
 } from '@chakra-ui/react';
@@ -15,6 +14,7 @@ export function IconButton({
         <>
             {!icon && !children ?
                 <ChakraButton
+                    variant="ghost"
                     className="ChakraButton"
                     leftIcon={icon}
                     {...rest}
@@ -26,6 +26,7 @@ export function IconButton({
                     {
                         children ?
                             <ChakraButton
+                                variant="ghost"
                                 className="ChakraButton"
                                 leftIcon={icon}
                                 {...rest}
@@ -34,7 +35,9 @@ export function IconButton({
                             </ChakraButton>
                             :
                             <ChakraIconButton
+                                variant="ghost"
                                 className="ChakraIconButton"
+                                borderRadius="full"
                                 icon={icon}
                                 {...rest}
                             />

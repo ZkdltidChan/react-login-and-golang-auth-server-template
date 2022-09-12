@@ -1,23 +1,24 @@
 import React, { } from "react";
 import {
     useDisclosure,
+    Box,
     Drawer as ChakraDrawer,
     DrawerOverlay as ChakraDrawerOverlay,
     DrawerContent as ChakraDrawerContent,
     DrawerCloseButton as ChakraDrawerCloseButton,
+    DrawerHeader as ChakraDrawerHeader,
 } from '@chakra-ui/react';
-import {
-    HamburgerIcon,
-    CloseIcon,
-} from '@chakra-ui/icons';
 import { IconButton } from "./IconButton";
 
 export function Drawer({
+    header,
     triggerButtonOpenIcon,
     triggerButtonCloseIcon,
     triggerButtonText,
+    onApply,
     placement = "top",
-    children, ...rest
+    children,
+    ...rest
 }) {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const btnRef = React.useRef()
@@ -27,6 +28,7 @@ export function Drawer({
                 size={'md'}
                 onClick={isOpen ? onClose : onOpen}
                 icon={isOpen ? triggerButtonCloseIcon : triggerButtonOpenIcon}
+                {...rest}
             >
                 {triggerButtonText}
             </IconButton>
@@ -36,11 +38,19 @@ export function Drawer({
                 placement={placement}
                 onClose={onClose}
                 finalFocusRef={btnRef}
+                onClick={onClose}
             >
                 <ChakraDrawerOverlay />
                 <ChakraDrawerContent>
-                    <ChakraDrawerCloseButton />
-                    {children}
+                        <ChakraDrawerCloseButton />
+                        {
+                            header ?
+                                <ChakraDrawerHeader>{header}</ChakraDrawerHeader> :
+                                <></>
+                        }
+                    <Box onClick={onClose}>
+                        {children}
+                    </Box>
                 </ChakraDrawerContent>
             </ChakraDrawer>
         </>

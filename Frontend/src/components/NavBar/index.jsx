@@ -1,156 +1,96 @@
 import React from "react";
-import { Link as RouterLink, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import {
     Box,
     Flex,
     HStack,
-    IconButton,
     Stack,
-    Link as ChakraLink,
     useColorModeValue,
-    useDisclosure,
-    Drawer,
-    DrawerOverlay,
-    DrawerContent,
-    DrawerCloseButton,
-    DrawerHeader,
-    DrawerBody,
-    Avatar,
-    Menu as ChakraMenu,
-    MenuItem as ChakraMenuItem,
-    MenuButton as ChakraMenuButton,
-    MenuList as ChakraMenuList,
-    Heading,
 } from '@chakra-ui/react';
 import { ColorModeSwitcher } from './../../ColorModeSwitcher';
 import {
     HamburgerIcon,
-    CloseIcon,
 } from '@chakra-ui/icons';
 import Logo from "../Logo";
-import { logout, useAuthDispatch } from "../../hook/auth";
-
+import AuthMenu from "./AuthMenu";
+import NavLink from "./NavLink";
+import { Drawer } from "../Buttons/Drawer";
 const Links = [
     { to: "embed_page_example", text: "Embed Page Example" },
     { to: "contact_us", text: "Contact Us" },
 ]
 
-
-const NavLink = ({ to, children, ...rest }) => (
-    <ChakraLink
-        as={RouterLink}
-        px={2}
-        py={1}
-        rounded={'md'}
-        _hover={{
-            textDecoration: 'none',
-            bg: useColorModeValue('gray.200', 'gray.700'),
-        }}
-        {...rest}
-        to={to}>
-        {children}
-    </ChakraLink>
-);
-
 const NavLogo = () => (
-    <Flex as={NavLink} justify="center" to="/">
+    <Flex as={NavLink} linkHover={false} justify="center" to="/">
         <Logo />
     </Flex>
 )
 
-function MenuDrawer({ Header, Links }) {
-    const { isOpen, onOpen, onClose } = useDisclosure()
-    const btnRef = React.useRef()
-    return (
-        <>
-            <IconButton
-                bg={useColorModeValue('white', 'gray.800')}
-                color={useColorModeValue('gray.600', 'white')}
-                size={'md'}
-                onClick={isOpen ? onClose : onOpen}
-                display={{ base: 'flex', md: 'none' }}
-                icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-            />
+const MenuList = ({ Links, logo, user }) => {
+    const MobileMenuList = () => {
+        return (
             <Drawer
-                isOpen={isOpen}
-                placement='top'
-                onClose={onClose}
-                finalFocusRef={btnRef}
+                display={{
+                    base: 'flex',
+                    md: 'none'
+                    // mobile 不顯示, desktop 顯示
+                }}
+                header={<>
+                    <HStack justify="space-between">
+                        {logo}
+                    </HStack>
+                </>
+                }
+                triggerButtonOpenIcon={<HamburgerIcon />}
             >
-                <DrawerOverlay />
-                <DrawerContent>
-                    <DrawerCloseButton />
-                    <DrawerHeader>{Header}</DrawerHeader>
-                    <DrawerBody>
-                        <Box pb={4} display={{ md: 'none' }}>
-                            <Stack as={'nav'} onClick={onClose} spacing={4}>
-                                {Links.map((link, index) => (
-                                    <NavLink key={index} to={link.to} >{link.text}</NavLink>
-                                ))}
-                            </Stack>
-                        </Box>
-                    </DrawerBody>
-                </DrawerContent>
+                <Stack as={'nav'} spacing={3}>
+                    {Links.map((link, index) => (
+                        <NavLink key={index} to={link.to} >{link.text}</NavLink>
+                    ))}
+                    <Box alignSelf="end" p={1}>
+                        <ColorModeSwitcher borderRadius="full" />
+                    </Box>
+                </Stack>
+
             </Drawer>
-        </>
+        )
+    }
+    return (
+        <HStack>
+            <HStack
+                as={'nav'}
+                spacing={4}
+                display={{
+                    base: 'none',
+                    md: 'flex'
+                    // mobile 不顯示, desktop 顯示
+                }}
+            >
+                {Links.map((link, index) => (
+                    <NavLink key={index} to={link.to} >{link.text}</NavLink>
+                ))}
+                {!user ?
+                    <>
+                        <NavLink to="/login" >Login</NavLink>
+                        <NavLink
+                            display={{
+                                base: 'none',
+                                md: 'flex'
+                            }} to="/signup">Sign up</NavLink>
+                    </>
+                    : <></>}
+                <ColorModeSwitcher borderRadius="full" />
+            </HStack>
+            {user ? <AuthMenu user={user} /> : <></>}
+            <MobileMenuList />
+        </HStack>
     )
 }
 
-
-const MenuList = ({ Links }) => (
-    <HStack
-        as={'nav'}
-        spacing={4}
-        display={{
-            base: 'none',
-            md: 'flex'
-            // mobile 不顯示, desktop 顯示
-        }}
-    >
-        {Links.map((link, index) => (
-            <NavLink key={index} to={link.to} >{link.text}</NavLink>
-        ))}
-    </HStack>
-)
-
-const AuthMenu = ({ user }) => {
-    const dispatch = useAuthDispatch()
-    const handleLogout = async () => {
-        await logout(dispatch)
-        navigator('/')
-    }
-    const handleSetting = () => { console.log("setting") }
-
-    return (
-        <HStack
-            as={'nav'}
-            spacing={4}
-        >
-            <Box isplay={{base:'none', md: 'full' }}>
-                <ColorModeSwitcher />
-            </Box>
-            {user ?
-                <ChakraMenu>
-                    <ChakraMenuButton as={Avatar} name={user.username} size={"sm"} />
-                    <ChakraMenuList>
-                        <Heading>{user.username}</Heading>
-                        <ChakraMenuItem onClick={handleSetting}>Setting</ChakraMenuItem>
-                        <ChakraMenuItem onClick={handleLogout}>Logout</ChakraMenuItem>
-                    </ChakraMenuList>
-                </ChakraMenu>
-                :
-                <HStack>
-                    <NavLink to="/login" >Login</NavLink>
-                    <NavLink
-                        display={{
-                            base: 'none',
-                            md: 'flex'
-                        }} to="/signup">Sign up</NavLink>
-                </HStack>
-            }
-        </HStack>)
+const FAKE_USER = {
+    username: "a",
+    img: 'https://bit.ly/dan-abramov',
 }
-
 
 export default function NavBar({ user }) {
     return (
@@ -168,20 +108,11 @@ export default function NavBar({ user }) {
                 direction="row"
                 justify="space-between"
             >
-                <MenuDrawer Header={<NavLogo />} Links={Links} />
                 <Box>
-                    <HStack>
-                        <Box>
-                            {<NavLogo />}
-                        </Box>
-
-                        <MenuList Links={Links} />
-                    </HStack>
+                    {<NavLogo />}
                 </Box>
-
-                <AuthMenu user={user} />
-                {/* <AuthMenu auth={true} /> */}
-
+                {/* <MenuList Links={Links} logo={<NavLogo />} /> */}
+                <MenuList Links={Links} logo={<NavLogo />} user={FAKE_USER} />
             </Flex>
             <Outlet />
         </>

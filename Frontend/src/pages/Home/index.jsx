@@ -3,39 +3,53 @@ import React, {
 } from "react";
 import {
     Heading,
-    Box,
     HStack,
     VStack,
+    Text,
+    Box,
 } from "@chakra-ui/react";
 
 import { Drawer } from "../../components/Buttons/Drawer";
 import { Popover } from "../../components/Buttons/Popover";
 import { Modal } from "../../components/Buttons/Modal";
-import { FaHands } from "react-icons/fa";
-import { HamburgerIcon } from "@chakra-ui/icons";
 const Home = () => {
     return (
-        <>
+        <Box p={5}>
             <Heading>
                 Home
             </Heading>
             <HStack>
                 <Drawer
                     triggerButtonText="Drawer"
+                    header="Drawer Example"
                 >
-                    <Heading>test</Heading>
+                    <VStack>
+                        <Heading>test1</Heading>
+                        <Heading>test2</Heading>
+                    </VStack>
                 </Drawer>
-                <Popover 
+                <Text>/</Text>
+
+                <Popover
+                    header="Popover Example"
                     triggerButtonText="Popover">
-                    <Heading>Body</Heading>
+                    <VStack>
+                        <Heading>test1</Heading>
+                        <Heading>test2</Heading>
+                    </VStack>
                 </Popover>
+                <Text>/</Text>
                 <Modal
+                    header="Modal Exmaple"
                     triggerButtonText="Modal"
                 >
-                    <Heading>test</Heading>
+                    <VStack>
+                        <Heading>test1</Heading>
+                        <Heading>test2</Heading>
+                    </VStack>
                 </Modal>
             </HStack>
-        </>
+        </Box>
     )
 }
 export default Home;

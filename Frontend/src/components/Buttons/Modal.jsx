@@ -1,19 +1,18 @@
 import React, { } from "react";
 import {
     useDisclosure,
+    Box,
     Modal as ChakraModal,
     ModalOverlay as ChakraModalOverlay,
     ModalContent as ChakraModalContent,
     ModalCloseButton as ChakraModalCloseButton,
     ModalFooter as ChakraModalFooter,
+    ModalHeader as ChakraModalHeader,
 } from '@chakra-ui/react';
-import {
-    HamburgerIcon,
-    CloseIcon,
-} from '@chakra-ui/icons';
 import { IconButton } from "./IconButton";
 
 export function Modal({
+    header,
     triggerButtonOpenIcon,
     triggerButtonCloseIcon,
     triggerButtonText,
@@ -48,7 +47,14 @@ export function Modal({
             >
                 <ChakraModalOverlay />
                 <ChakraModalContent>
-                    <ChakraModalCloseButton />
+                    <Box p={3}>
+                        <ChakraModalCloseButton />
+                    </Box>
+                    {
+                        header ?
+                            <ChakraModalHeader>{header}</ChakraModalHeader> :
+                            <></>
+                    }
                     {children}
                     <ChakraModalFooter>
                         {closeText || closeIcon ?

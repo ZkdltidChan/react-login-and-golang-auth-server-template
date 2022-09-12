@@ -1,10 +1,10 @@
 import React, { } from "react";
 import {
-    Button,
     Box,
     Popover as ChakraPopover,
     PopoverTrigger as ChakraPopoverTrigger,
     PopoverContent as ChakraPopoverContent,
+    PopoverBody as ChakraPopoverBody,
     PopoverHeader as ChakraPopoverHeader,
     PopoverArrow as ChakraPopoverArrow,
     PopoverCloseButton as ChakraPopoverCloseButton,
@@ -15,7 +15,8 @@ export function Popover({
     triggerButtonIcon,
     triggerButtonText,
     header = "Plz Set you Header",
-    children
+    children,
+    ...rest
 }) {
     return (
         <>
@@ -24,6 +25,7 @@ export function Popover({
                     <Box>
                         <IconButton
                             icon={triggerButtonIcon}
+                            {...rest}
                         >
                             {triggerButtonText}
                         </IconButton>
@@ -36,7 +38,9 @@ export function Popover({
                     <ChakraPopoverHeader>
                         {header}
                     </ChakraPopoverHeader>
-                    {children}
+                    <ChakraPopoverBody>
+                        {children}
+                    </ChakraPopoverBody>
                 </ChakraPopoverContent>
             </ChakraPopover>
         </>
