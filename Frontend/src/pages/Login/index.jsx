@@ -12,15 +12,19 @@ import {
     VStack,
     Button,
     Divider,
-    layout,
+    HStack,
+    Text,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { loginUser, useAuthDispatch, useAuthState } from "../../hook/auth";
+import { 
+    loginUser,
+    useAuthDispatch,
+    // useAuthState
+    } from "../../hook/auth";
 import { useNavigate } from "react-router-dom";
 import DiscordLoginButton from "../../components/Login/DiscordLoginButton";
 import GoogleLoginButton from "../../components/Login/GoogleLoginButton";
 import TwitterLoginButton from "../../components/Login/TwitterLoginButton";
-import Loading from "../../components/Loading";
 
 const LoginFrom = ({ onApply }) => {
     const dispatch = useAuthDispatch()
@@ -71,7 +75,7 @@ const ThirdPartyLogin = () => {
 }
 
 const Login = () => {
-    const { loading } = useAuthState()
+    // const { loading } = useAuthState()
 
     return (
         <>
@@ -85,20 +89,26 @@ const Login = () => {
                         maxW="lg"
                         minW={{ base: "100%", md: "md" }}
                         justify="center"
-                    bg={useColorModeValue('white', 'gray.700')}
+                        bg={useColorModeValue('white', 'gray.700')}
                     >
 
-                            <VStack w="100%" spacing={5}>
-                                <Heading textAlign="center">
-                                    Login
-                                </Heading>
-                                <LoginFrom onApply={() => console.log("yo")} />
-                                <Divider />
-                                <ThirdPartyLogin />
-                            </VStack>
+                        <VStack w="100%" spacing={5}>
+                            <Heading textAlign="center">
+                                Login
+                            </Heading>
+                            <LoginFrom onApply={() => console.log("yo")} />
+                                <HStack  w="100%">
+                                    <Divider className="divider"/>
+                                    <Text fontSize="sm" whiteSpace="nowrap" color="muted">
+                                        or continue with
+                                    </Text>
+                                    <Divider />
+                                </HStack>
+                            <ThirdPartyLogin />
+                        </VStack>
                     </Flex>
                 </VStack>
-            </Container>
+            </Container >
         </>
     )
 }
