@@ -30,7 +30,8 @@ services:
           POSTGRES_USER: ${POSTGRES_USER}
           POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       volumes:
-          - $PWD/:/postgresql/data/:/var/lib/postgresql/data
+          # - $PWD/:/postgresql/data/:/var/lib/postgresql/data
+          - $PWD/:/var/lib/postgresql/data
   # postgres:
   #   image: postgres:13.4
   #   ports:

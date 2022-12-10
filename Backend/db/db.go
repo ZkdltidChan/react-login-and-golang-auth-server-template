@@ -2,10 +2,13 @@ package db
 
 import (
 	"fmt"
+
 	"gorm.io/driver/postgres"
+
 	// "gorm.io/driver/sqlite"
-	"gorm.io/gorm"
 	"os"
+
+	"gorm.io/gorm"
 )
 
 type ProviderDB struct {
@@ -36,8 +39,9 @@ func ProvideDB() ProviderDB {
 		panic("failed to connect database")
 	}
 
-	db.AutoMigrate(&Article{})
+	// db.AutoMigrate(&Article{})
 	db.AutoMigrate(&User{})
+	db.AutoMigrate(&Admin{})
 
 	return ProviderDB{Storage: db}
 }

@@ -1,3 +1,18 @@
+// @title Swagger Example API
+// @version 1.0
+// @description This is a sample server Petstore server.
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name API Support
+// @contact.url http://www.swagger.io/support
+// @contact.email support@swagger.io
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host localhost:4000
+// @BasePath /
+
 package api
 
 import (
@@ -6,10 +21,14 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
+	docs "crud-with-auth/docs"
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
 	"github.com/google/wire"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 type Api struct {
@@ -21,18 +40,89 @@ type Api struct {
 var RedisContext = context.Background()
 
 func (api *Api) Start() {
+	docs.SwaggerInfo.Title = "Auth Service API"
+	api.r.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	api.r.GET("/", api.HomeHandler)
 
 	api.Auth()
-	api.Articles()
+	// api.Articles()
+	api.User()
+	api.Admin()
 	api.Leaderboard()
 	api.OAuth()
-
 	api.r.Run(":4000")
 }
 
 func (api Api) HomeHandler(c *gin.Context) {
 	c.String(http.StatusOK, "Hello World")
+}
+
+func (api Api) AuthAdminMiddleware(c *gin.Context) {
+	tokenString := c.Request.Header.Get("authorization")
+
+	if tokenString == "" {
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+			"message": "Not authorized",
+		})
+		return
+	}
+
+	splittedToken := strings.Split(tokenString, " ")
+	token := splittedToken[1]
+
+	if token == "" {
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+			"message": "Not authorized",
+		})
+		return
+	}
+
+	var admin db.Admin
+	if _, err := admin.ValidateAdminToken(token); err != nil {
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+			"message": "Token invalid or expired",
+		})
+		return
+	}
+
+	c.Set("username", admin.Username)
+	c.Set("admin_id", admin.ID)
+
+	c.Next()
+}
+
+func (api Api) AuthMiddleware(c *gin.Context) {
+	tokenString := c.Request.Header.Get("authorization")
+
+	if tokenString == "" {
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+			"message": "Not authorized",
+		})
+		return
+	}
+
+	splittedToken := strings.Split(tokenString, " ")
+	token := splittedToken[1]
+
+	if token == "" {
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+			"message": "Not authorized",
+		})
+		return
+	}
+
+	var user db.User
+	if _, err := user.ValidateToken(token); err != nil {
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+			"message": "Token invalid or expired",
+		})
+		return
+	}
+
+	c.Set("username", user.Username)
+	c.Set("user_id", user.ID)
+
+	c.Next()
 }
 
 func CORSMiddleware() gin.HandlerFunc {
@@ -51,6 +141,7 @@ func CORSMiddleware() gin.HandlerFunc {
 		}
 	}
 }
+
 func NewAPI(db db.ProviderDB) *Api {
 	r := gin.Default()
 	r.Use(CORSMiddleware())

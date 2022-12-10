@@ -18,6 +18,7 @@ import { Drawer } from "../Buttons/Drawer";
 const Links = [
     { to: "embed_page_example", text: "Embed Page Example" },
     { to: "contact_us", text: "Contact Us" },
+    { to:"mock_example", text: "Mock Example"}
 ]
 
 const NavLogo = () => (
@@ -93,6 +94,10 @@ const FAKE_USER = {
 }
 
 export default function NavBar({ user }) {
+    // const isDesktop = useBreakpointValue({
+    //     base: false,
+    //     lg: true,
+    //   })
     return (
         <>
             <Flex
@@ -111,8 +116,8 @@ export default function NavBar({ user }) {
                 <Box>
                     {<NavLogo />}
                 </Box>
-                {/* <MenuList Links={Links} logo={<NavLogo />} /> */}
-                <MenuList Links={Links} logo={<NavLogo />} user={FAKE_USER} />
+                <MenuList Links={Links} logo={<NavLogo />} />
+                {/* <MenuList Links={Links} logo={<NavLogo />} user={FAKE_USER} /> */}
             </Flex>
             <Outlet />
         </>

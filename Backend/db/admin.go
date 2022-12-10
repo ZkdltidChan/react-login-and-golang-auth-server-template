@@ -8,56 +8,55 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-type User struct {
+// swagger:parameters getUserDetail
+type Admin struct {
 	Model
-	Username   string `json:"username"`
-	Avatar     string `json:"avatar"`
-	Email      string `json:"email"`
-	Password   string `json:"password"`
-	Provider   string `json:"provider"`
-	ProviderID string `json:"provider_id"`
+	Username string `json:"username"`
+	Avatar   string `json:"avatar"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
 
-type RegisterUser struct {
+type RegisterAdmin struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
 
-type LoginUser struct {
+type LoginAdmin struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
-type GetUserParam struct {
+type GetAdminParam struct {
 	Model
 	Username string `json:"username"`
 	Avatar   string `json:"avatar"`
 	Email    string `json:"email"`
 }
 
-func (user *User) GeneratePassword() {
-	bytes, err := bcrypt.GenerateFromPassword([]byte(user.Password), 14)
+func (admin *Admin) GenerateAdminPassword() {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(admin.Password), 14)
 	if err != nil {
 		panic(err)
 	}
-	user.Password = string(bytes)
+	admin.Password = string(bytes)
 }
 
-func (user *User) ValidatePassword(password string) error {
-	return bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+func (admin *Admin) ValidateAdminPassword(password string) error {
+	return bcrypt.CompareHashAndPassword([]byte(admin.Password), []byte(password))
 }
 
-type SignedDetails struct {
+type SignedAdminDetails struct {
 	ID       uint
 	Email    string
 	UserName string
 	jwt.StandardClaims
 }
 
-func (user *User) Token() (string, error) {
-	claims := &SignedDetails{
-		ID:       user.ID,
-		Email:    user.Email,
-		UserName: user.Username,
+func (admin *Admin) AdminToken() (string, error) {
+	claims := &SignedAdminDetails{
+		ID:       admin.ID,
+		Email:    admin.Email,
+		UserName: admin.Username,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Local().Add(time.Hour * time.Duration(1)).Unix(),
 		},
@@ -67,10 +66,10 @@ func (user *User) Token() (string, error) {
 	return token.SignedString([]byte(SECRET_KEY))
 }
 
-func (user *User) ValidateToken(tokenString string) (bool, error) {
+func (admin *Admin) ValidateAdminToken(tokenString string) (bool, error) {
 	token, err := jwt.ParseWithClaims(
 		tokenString,
-		&SignedDetails{},
+		&SignedAdminDetails{},
 		func(token *jwt.Token) (interface{}, error) {
 			return []byte(SECRET_KEY), nil
 		},
@@ -80,13 +79,13 @@ func (user *User) ValidateToken(tokenString string) (bool, error) {
 		return false, err
 	}
 
-	if claims, ok := token.Claims.(*SignedDetails); ok && token.Valid {
+	if claims, ok := token.Claims.(*SignedAdminDetails); ok && token.Valid {
 		if claims.ExpiresAt < time.Now().Local().Unix() {
 			return false, errors.New("token expired")
 		}
-		user.ID = claims.ID
-		user.Email = claims.Email
-		user.Username = claims.UserName
+		admin.ID = claims.ID
+		admin.Email = claims.Email
+		admin.Username = claims.UserName
 
 		return true, nil
 	} else {

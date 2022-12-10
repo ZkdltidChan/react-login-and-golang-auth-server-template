@@ -14,7 +14,7 @@ export default function Logo() {
                 alt="logo"
             />
             <Text>
-                Logo!!
+                Logo
             </Text>
         </HStack>
     );
