@@ -12,13 +12,9 @@ const docTemplate = `{
         "title": "{{.Title}}",
         "termsOfService": "http://swagger.io/terms/",
         "contact": {
-            "name": "API Support",
+            "name": "Contact API Support",
             "url": "http://www.swagger.io/support",
-            "email": "support@swagger.io"
-        },
-        "license": {
-            "name": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+            "email": "zkdltid.chan@gmail.com"
         },
         "version": "{{.Version}}"
     },
@@ -354,7 +350,7 @@ var SwaggerInfo = &swag.Spec{
 	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "Swagger Example API",
-	Description:      "This is a sample server Petstore server.",
+	Description:      "This is a description sample.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 }

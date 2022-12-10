@@ -22,7 +22,7 @@ func (api *Api) User() {
 // @Param Authorization header string true "Authorization"
 // @Router /user/profile [get]
 // @Success 200 {object} db.User
-// @Failure 400
+// @Failure 404
 func (api Api) GetPofile(c *gin.Context) {
 	user_id, _ := c.Get("user_id")
 	var user db.User

@@ -1,17 +1,13 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "This is a sample server Petstore server.",
+        "description": "This is a description sample.",
         "title": "Swagger Example API",
         "termsOfService": "http://swagger.io/terms/",
         "contact": {
-            "name": "API Support",
+            "name": "Contact API Support",
             "url": "http://www.swagger.io/support",
-            "email": "support@swagger.io"
-        },
-        "license": {
-            "name": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+            "email": "zkdltid.chan@gmail.com"
         },
         "version": "1.0"
     },

@@ -49,7 +49,7 @@ func (api Api) GetUserList(c *gin.Context) {
 // @Param data body db.LoginAdmin true "body data".
 // @Router /admin/login [post]
 // @Success 200 {object} db.Admin
-// @Failure 400
+// @Failure 401
 func (api Api) AdminLoginHandler(c *gin.Context) {
 	var adminDto db.Admin
 	var admin db.Admin
