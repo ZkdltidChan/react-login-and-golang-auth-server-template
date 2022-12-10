@@ -26,7 +26,6 @@ func (api *Api) User() {
 func (api Api) GetPofile(c *gin.Context) {
 	user_id, _ := c.Get("user_id")
 	var user db.User
-	fmt.Print(user_id)
 	if err := api.db.Storage.Where("id = ?", user_id).First(&user).Error; err != nil {
 		c.AbortWithStatus(404)
 		return
