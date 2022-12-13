@@ -10,6 +10,11 @@
 // @host localhost:4000
 // @BasePath /
 
+// @securitydefinitions.oauth2.application OAuth2Application
+// @tokenUrl http://localhost:4000/oauth/
+// @scope.write Grants write access
+// @scope.admin Grants read and write access to administrative information
+
 package api
 
 import (

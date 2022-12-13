@@ -11,14 +11,15 @@ import MockExample from "../pages/MockExample";
 import { useAuthState } from "../hook/auth";
 export default function Router() {
     const auth = useAuthState()
+    console.log(auth)
     return (
         <Routes>
             <Route element={<NavBar user={auth.user} />}>
                 <Route path="/" element={<Home />} />
-                <Route path="/embed_page_example" element={<EmbedPageExample />}>
+                {/* <Route path="/embed_page_example" element={<EmbedPageExample />}>
                     <Route path=":id" element={<EmbedPageWithID />} />
                 </Route>
-                <Route path="/contact_us" element={<ContactUs />} />
+                <Route path="/contact_us" element={<ContactUs />} /> */}
                 <Route path="/mock_example" element={<MockExample />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />

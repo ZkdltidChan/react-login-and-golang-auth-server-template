@@ -19,7 +19,8 @@ const Home = () => {
                 Home
             </Heading>
             <HStack>
-                <Drawer
+                
+                {/* <Drawer
                     triggerButtonText="Drawer"
                     header="Drawer Example"
                 >
@@ -47,7 +48,7 @@ const Home = () => {
                         <Heading>test1</Heading>
                         <Heading>test2</Heading>
                     </VStack>
-                </Modal>
+                </Modal> */}
             </HStack>
         </Box>
     )

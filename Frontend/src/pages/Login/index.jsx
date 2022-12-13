@@ -28,13 +28,13 @@ import TwitterLoginButton from "../../components/Login/TwitterLoginButton";
 
 const LoginFrom = ({ onApply }) => {
     const dispatch = useAuthDispatch()
-    const [email, setEmail] = useState('')
+    const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const navigate = useNavigate()
 
     const handleLogin = async (e) => {
         e.preventDefault()
-        let payload = { email, password }
+        let payload = { username, password }
         try {
             const response = await loginUser(dispatch, payload)
             if (response) {
@@ -49,9 +49,9 @@ const LoginFrom = ({ onApply }) => {
 
     return (
         < VStack w="100%" spacing={4} >
-            <FormControl id="email">
-                <FormLabel >Email address</FormLabel>
-                <Input type="email" onChange={(e) => setEmail(e.target.value)} />
+            <FormControl id="username">
+                <FormLabel >Username</FormLabel>
+                <Input type="username" onChange={(e) => setUsername(e.target.value)} />
             </FormControl>
             <FormControl id="password">
                 <FormLabel>Password</FormLabel>

@@ -2,7 +2,6 @@ package api
 
 import (
 	"crud-with-auth/db"
-	"fmt"
 
 	// "strings"
 
@@ -15,13 +14,14 @@ func (api *Api) User() {
 	group.GET("/profile", api.GetPofile)
 }
 
+// @Tags     User
 // @Summary User profile
 // @Accept  json
 // @Produce  json
-// @Tags     User
 // @Param Authorization header string true "Authorization"
 // @Router /user/profile [get]
 // @Success 200 {object} db.User
+// @Failure 401
 // @Failure 404
 func (api Api) GetPofile(c *gin.Context) {
 	user_id, _ := c.Get("user_id")

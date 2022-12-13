@@ -16,9 +16,8 @@ import NavLink from "../NavLink";
 export default function AuthMenu({ user }) {
     const dispatch = useAuthDispatch()
     const handleLogout = async () => {
-        // await logout(dispatch)
-        console.log("LLL")
-        // navigator('/')
+        await logout(dispatch)
+        navigator('/')
     }
 
     return (
@@ -32,7 +31,8 @@ export default function AuthMenu({ user }) {
                 </Box>
                 <Popover
                     triggerButtonIcon={<Avatar src={user.img}></Avatar>}
-                    header="User Setting"
+                    // header="User Setting"
+                    header={user.username}
                 >
                     <VStack align="start">
                         <NavLink to="/user_menu1" >User Menu1</NavLink>

@@ -45,6 +45,7 @@ func (api Api) UserLoginHandler(c *gin.Context) {
 	} else {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "Login successfully",
+			"user":    user,
 			"token":   token,
 		})
 	}
@@ -68,7 +69,8 @@ func (api Api) UserRegisterHandler(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, gin.H{
-		"message": "User registered",
+		"message":  "User registered",
+		"username": user.Username,
 	})
 }
 

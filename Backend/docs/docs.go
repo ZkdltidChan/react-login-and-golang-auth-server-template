@@ -51,8 +51,8 @@ const docTemplate = `{
                             "$ref": "#/definitions/db.Admin"
                         }
                     },
-                    "400": {
-                        "description": "Bad Request"
+                    "401": {
+                        "description": "Unauthorized"
                     }
                 }
             }
@@ -194,8 +194,11 @@ const docTemplate = `{
                             "$ref": "#/definitions/db.User"
                         }
                     },
-                    "400": {
-                        "description": "Bad Request"
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
                     }
                 }
             }
@@ -338,6 +341,17 @@ const docTemplate = `{
                 "username": {
                     "type": "string"
                 }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "OAuth2Application": {
+            "type": "oauth2",
+            "flow": "application",
+            "tokenUrl": "http://localhost:4000/oauth/",
+            "scopes": {
+                "admin": " Grants read and write access to administrative information",
+                "write": " Grants write access"
             }
         }
     }

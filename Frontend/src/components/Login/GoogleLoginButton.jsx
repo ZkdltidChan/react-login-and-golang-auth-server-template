@@ -11,7 +11,7 @@ function GoogleLoginButton() {
         console.log("TODO: google login")
     }
     return (
-        <Button disabled={true} bg="white" variant="outline" leftIcon={<FcGoogle />} onClick={onClick}>
+        <Button disabled={true} bg="gray" variant="outline" leftIcon={<FcGoogle />} onClick={onClick}>
             Login With Google
         </Button>
         )

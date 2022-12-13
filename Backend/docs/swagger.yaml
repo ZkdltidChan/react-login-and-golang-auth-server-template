@@ -95,8 +95,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/db.Admin'
-        "400":
-          description: Bad Request
+        "401":
+          description: Unauthorized
       summary: Admin login
       tags:
       - Admin
@@ -187,8 +187,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/db.User'
-        "400":
-          description: Bad Request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
       summary: User profile
       tags:
       - User
@@ -215,4 +217,12 @@ paths:
       summary: Create User
       tags:
       - User
+securityDefinitions:
+  OAuth2Application:
+    flow: application
+    scopes:
+      admin: ' Grants read and write access to administrative information'
+      write: ' Grants write access'
+    tokenUrl: http://localhost:4000/oauth/
+    type: oauth2
 swagger: "2.0"
