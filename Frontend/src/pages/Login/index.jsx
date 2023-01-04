@@ -34,7 +34,7 @@ const LoginFrom = ({ onApply }) => {
 
     const handleLogin = async (e) => {
         e.preventDefault()
-        let payload = { username, password }
+        let payload = { ID:username, Pw: password }
         try {
             const response = await loginUser(dispatch, payload)
             if (response) {

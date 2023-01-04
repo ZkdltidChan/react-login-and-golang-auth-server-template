@@ -5,7 +5,7 @@ import { BASE_URL, LOGIN_ERROR, LOGIN_SUCCESS, LOGOUT, REQUEST_LOGIN } from "../
 
 export const loginUser = async (dispatch, loginPayload) => {
     const requestOptions = {
-        url: `${BASE_URL}/user/login`,
+        url: `${BASE_URL}/signin`,
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

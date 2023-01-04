@@ -1,4 +1,4 @@
-export const BASE_URL = 'http://localhost:4000';
+export const BASE_URL = 'http://localhost:3000';
 
 export const API_SUCCESS = "API_SUCCESS"
 export const API_ERROR = "API_ERROR"
